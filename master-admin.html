@@ -118,7 +118,7 @@ import { browserLocalPersistence, getAuth, onAuthStateChanged, setPersistence, s
 import { addDoc, collection, deleteDoc, doc, getFirestore, onSnapshot, serverTimestamp, setDoc } from 'https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js';
 import { firebaseConfig } from './firebase-config.js';
 
-const MASTER_ADMIN_UID = 'kzlnh5rBzpTlYEqF7Ou35F1YWaa2';
+const MASTER_ADMIN_UID = 'o5PTVtoFnQcC8i7BFiSkvuQ5QV93';
 const MASTER_ADMIN_EMAIL = 'drgigy@gmail.com';
 
 const app = initializeApp(firebaseConfig);
@@ -275,7 +275,7 @@ async function syncUserMappings(){
       adminSharedWith,
       sharedWith,
       mappingUpdatedAt:serverTimestamp(),
-      mappingUpdatedBy:MASTER_ADMIN_UID
+      mappingUpdatedBy:auth.currentUser?.uid || user.id
     },{merge:true});
   });
   await Promise.all(writes);
@@ -367,7 +367,7 @@ groupForm.addEventListener('submit', async event => {
       adminUids:adminUidsForEmails(admins),
       createdAt:serverTimestamp(),
       mappingUpdatedAt:serverTimestamp(),
-      mappingUpdatedBy:MASTER_ADMIN_UID
+      mappingUpdatedBy:auth.currentUser?.uid || MASTER_ADMIN_UID
     });
     safeLogActivity('group_created', {
       noteId:groupRef.id,
